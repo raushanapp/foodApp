@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styleRecipe/recipe.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="recipe"></div>
+    <div id="src">
+        <!-- <h3>Food </h3> -->
+        <input type="text" placeholder="Search your recipe" id="search">
+        <button id="btn">S</button>
+    </div>
+
+    <div id ='search_meal'></div>
+
+    <div id="showMeal"></div>
+</body>
+</html> 
+<script type="module">
+
+
+
+    import navbar from './recipe/navbar.js';
+
+    let recipe_div = document.getElementById('recipe');
+    recipe_div.innerHTML = navbar()
+    // console.log(navbar)
+
+    // for search data improt and with the help of seraching data
+
+    import  {getRecipes,appendMeal} from './showRecipe/show.js'
+
+    let recipes = document.getElementById('search').value;
+    // console.log(recipes)
+    let list1 = document.getElementById('search_meal')
+
+    let btn1 = document.getElementById('btn')
+
+    // let responace = getRecipes(`https://themealdb.com/api/json/v1/1/search.php?s= ${recipes}`)
+    
+    btn1.addEventListener('click', searchData)
+//  if(list1===true) {
+    async function  searchData  () {
+        // console.log("event:",event)
+
+        try {
+
+            
+            let dataMeal1 = await  getRecipes(`https://themealdb.com/api/json/v1/1/search.php?s= ${recipes}`)
+
+            meal_div.innerHTML = null
+             
+            appendMeal(dataMeal1,list1)
+        }catch(err) {
+            console.log('meal Data err:',err)
+        }
+        
+
+    }
+// }
+
+//  else {
+
+ 
+
+
+
+
+
+
+
+
+//    showing home page meal Data function 
+
+
+
+ let meal_div = document.getElementById('showMeal')
+
+   async function getData() {
+      
+       try {
+
+        let res = await fetch("https://themealdb.com/api/json/v1/1/categories.php")
+
+            let dataMeal = await res.json();
+
+            let mealArr = dataMeal.categories
+             appendFood(mealArr)
+            console.log(mealArr)
+       }catch(e) {
+           console.log("INdex page error showing", e)
+       }
+   }
+
+   getData()
+
+
+   const appendFood = (mealArr) => {
+    //    console.log(mealArr)
+       meal_div.innerHTML =null;
+
+      mealArr.forEach(({strCategory,strCategoryDescription,strCategoryThumb})=>{
+         
+          let div = document.createElement('div');
+
+          let name = document.createElement('p');
+
+           name.textContent =`Category Name - ${strCategory}`;
+
+           let description = document.createElement('p')
+
+           description.textContent =`Description - ${strCategoryDescription}`;
+
+           let img = document.createElement('img');
+
+           img.src = strCategoryThumb;
+
+           div.append(img,name, description);
+
+           meal_div.append(div)
+
+
+      }) 
+   }
+
+//  }
+   
+
+
+
+    
+</script>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styleRecipe/recipe.css">
+
+</head>
+<body>
+    <div id="day"></div>
+</body>
+</html>
+<script type="module">
+    import navbar from './recipe/navbar.js';
+
+    let day_div = document.getElementById('day');
+    day_div.innerHTML = navbar()
+
+
+    import  {getRecipes,appendMeal} from './showRecipe/show.js'
+
+    let recipe_day1 = getRecipes('https://themealdb.com/api/json/v1/1/random.php');
+
+    let daivDay1 = document.getElementById('day')
+
+    recipe_day1.then((res)=>{
+
+        appendMeal(res,daivDay1)
+    })
+    .catch((err) =>{
+        console.log('error:',err)
+    })
+    
+</script>
